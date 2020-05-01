@@ -11,6 +11,8 @@ package com.geoprocessing.model.swmm;
 
 import java.io.File;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.geoprocessing.model.swmm.object.DateTimeType;
 import com.geoprocessing.model.swmm.object.ObjectType;
@@ -37,6 +39,10 @@ public class JSWMM {
 	 */
 	private String errMsg;
 	private LocalDateTime startTime=null, endTime=null, reportStart=null, currentTime=null;
+	
+	private List<String> raingages = null;
+	private List<String> conduits = null;
+	
 	
 	public JSWMM(String inFile) throws SWMMExecption{
 		this.inFile = inFile;
@@ -329,4 +335,35 @@ public class JSWMM {
 		}
 	}
 	
+	public List<String> getRainGages(){
+		if(this.raingages != null && this.raingages.size()!=0)
+			return this.raingages;
+		
+		this.raingages = new ArrayList<String>();
+		
+		int count = this.countObjects(ObjectType.GAGE.getValue());
+		
+		for(int i=0;i<count;i++){
+			String name = this.getObjectId(ObjectType.GAGE.getValue(), i);
+			this.raingages.add(name);
+		}
+		
+		return this.raingages;
+	}
+	
+	public List<String> getLinks(){
+		if(this.conduits != null && this.conduits.size()!=0)
+			return this.conduits;
+		
+		this.conduits = new ArrayList<String>();
+		
+		int count = this.countObjects(ObjectType.LINK.getValue());
+		
+		for(int i=0;i<count;i++){
+			String name = this.getObjectId(ObjectType.LINK.getValue(), i);
+			this.conduits.add(name);
+		}
+		
+		return this.conduits;
+	}
 }

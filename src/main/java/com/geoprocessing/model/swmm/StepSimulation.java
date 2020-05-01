@@ -72,13 +72,7 @@ public class StepSimulation {
 		
 		LocalDateTime currentTime = this.swmm.getCurrentDateTime();
 		while ((currentTime.isBefore(nextWaitTime))  ) {
-			double eclapsed = this.swmm.step();
-			try {
-				System.out.println(swmm.getGagePrecip("RainGage"));
-			} catch (SWMMExecption e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			this.swmm.step();
 			currentTime = this.swmm.getCurrentDateTime();
 		}
 		this.waitForValueTime = nextWaitTime;
@@ -90,6 +84,12 @@ public class StepSimulation {
 		this.swmm.end();
 		this.swmm.report();
 		this.swmm.close();
+		
+		return true;
+	}
+	
+	public boolean run(){
+		this.swmm.run();
 		
 		return true;
 	}
